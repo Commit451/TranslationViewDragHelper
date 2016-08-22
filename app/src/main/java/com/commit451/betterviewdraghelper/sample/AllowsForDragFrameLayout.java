@@ -24,13 +24,6 @@ public class AllowsForDragFrameLayout extends FrameLayout {
         }
 
         @Override
-        public void onViewPositionChanged(View changedView, int left, int top, int dx, int dy) {
-            super.onViewPositionChanged(changedView, left, top, dx, dy);
-            changedView.setX(left);
-            changedView.setY(top);
-        }
-
-        @Override
         public int clampViewPositionHorizontal(View child, int left, int dx) {
             //allow full movement along horizontal axis
             return left;
