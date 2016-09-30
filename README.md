@@ -7,25 +7,11 @@ A version of [ViewDragHelper](https://developer.android.com/reference/android/su
 # Usage
 If you have ever used a `ViewDragHelper` before, you may have noticed that if you were to translate your views using View.setX() or View.setY(), your helper would no longer correctly allow you to drag the views. This library seeks to correct this. Usage is identical to `ViewDragHelper` usage
 ```java
-TranslationViewDragHelper viewDragHelper = TranslationViewDragHelper.create(
-                                            viewGroup,
-                                            1.0f,
-                                            viewDragHelperCallback);
-
-//Somewhere else...
-TranslationViewDragHelper.Callback mCallback = new TranslationViewDragHelper.Callback() {
+TranslationViewDragHelper.Callback callback = new TranslationViewDragHelper.Callback() {
         @Override
         public boolean tryCaptureView(View child, int pointerId) {
             //Any children can be captured
             return true;
-        }
-
-        @Override
-        public void onViewPositionChanged(View changedView, int left, int top, int dx, int dy) {
-            super.onViewPositionChanged(changedView, left, top, dx, dy);
-            //Simply set the views translation to the new position
-            changedView.setX(left);
-            changedView.setY(top);
         }
 
         @Override
@@ -40,6 +26,11 @@ TranslationViewDragHelper.Callback mCallback = new TranslationViewDragHelper.Cal
             return top;
         }
     };
+
+TranslationViewDragHelper viewDragHelper = TranslationViewDragHelper.create(
+                                            viewGroup,
+                                            1.0f,
+                                            callback);
 ```
 See the sample [custom view](https://github.com/Commit451/TranslationViewDragHelper/blob/master/app/src/main/java/com/commit451/betterviewdraghelper/sample/AllowsForDragFrameLayout.java) for a more complete example
 
