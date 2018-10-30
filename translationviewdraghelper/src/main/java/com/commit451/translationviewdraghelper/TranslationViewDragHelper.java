@@ -18,10 +18,6 @@
 package com.commit451.translationviewdraghelper;
 
 import android.content.Context;
-import android.support.v4.view.MotionEventCompat;
-import android.support.v4.view.VelocityTrackerCompat;
-import android.support.v4.view.ViewCompat;
-import android.support.v4.widget.ScrollerCompat;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
@@ -31,6 +27,11 @@ import android.view.ViewGroup;
 import android.view.animation.Interpolator;
 
 import java.util.Arrays;
+
+import androidx.core.view.MotionEventCompat;
+import androidx.core.view.VelocityTrackerCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.widget.ScrollerCompat;
 
 /**
  * Modified version of ViewDragHelper which accounts for if views

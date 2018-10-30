@@ -1,7 +1,8 @@
 package com.commit451.betterviewdraghelper.sample;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
