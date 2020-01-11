@@ -247,7 +247,7 @@ private constructor(context: Context, private val parentView: ViewGroup, private
          *
          * @see .STATE_SETTLING
          */
-        fun onViewDragStateChanged(state: Int) {}
+        open fun onViewDragStateChanged(state: Int) {}
 
         /**
          * Called when the captured view's position changes as the result of a drag or settle.
@@ -258,7 +258,7 @@ private constructor(context: Context, private val parentView: ViewGroup, private
          * @param dx Change in X position from the last call
          * @param dy Change in Y position from the last call
          */
-        fun onViewPositionChanged(changedView: View?, left: Int, top: Int, dx: Int, dy: Int) {}
+        open fun onViewPositionChanged(changedView: View?, left: Int, top: Int, dx: Int, dy: Int) {}
 
         /**
          * Called when a child view is captured for dragging or settling. The ID of the pointer
@@ -269,7 +269,7 @@ private constructor(context: Context, private val parentView: ViewGroup, private
          * @param capturedChild Child view that was captured
          * @param activePointerId Pointer id tracking the child capture
          */
-        fun onViewCaptured(capturedChild: View, activePointerId: Int) {}
+        open fun onViewCaptured(capturedChild: View, activePointerId: Int) {}
 
         /**
          * Called when the child view is no longer being actively dragged.
@@ -290,7 +290,7 @@ private constructor(context: Context, private val parentView: ViewGroup, private
          * @param xvel X velocity of the pointer as it left the screen in pixels per second.
          * @param yvel Y velocity of the pointer as it left the screen in pixels per second.
          */
-        fun onViewReleased(releasedChild: View?, xvel: Float, yvel: Float) {}
+        open fun onViewReleased(releasedChild: View?, xvel: Float, yvel: Float) {}
 
         /**
          * Called when one of the subscribed edges in the parent view has been touched
@@ -306,7 +306,7 @@ private constructor(context: Context, private val parentView: ViewGroup, private
          *
          * @see .EDGE_BOTTOM
          */
-        fun onEdgeTouched(edgeFlags: Int, pointerId: Int) {}
+        open fun onEdgeTouched(edgeFlags: Int, pointerId: Int) {}
 
         /**
          * Called when the given edge may become locked. This can happen if an edge drag
@@ -317,7 +317,7 @@ private constructor(context: Context, private val parentView: ViewGroup, private
          * @param edgeFlags A combination of edge flags describing the edge(s) locked
          * @return true to lock the edge, false to leave it unlocked
          */
-        fun onEdgeLock(edgeFlags: Int): Boolean {
+        open fun onEdgeLock(edgeFlags: Int): Boolean {
             return false
         }
 
@@ -335,7 +335,7 @@ private constructor(context: Context, private val parentView: ViewGroup, private
          *
          * @see .EDGE_BOTTOM
          */
-        fun onEdgeDragStarted(edgeFlags: Int, pointerId: Int) {}
+        open fun onEdgeDragStarted(edgeFlags: Int, pointerId: Int) {}
 
         /**
          * Called to determine the Z-order of child views.
@@ -343,7 +343,7 @@ private constructor(context: Context, private val parentView: ViewGroup, private
          * @param index the ordered position to query for
          * @return index of the view that should be ordered at position `index`
          */
-        fun getOrderedChildIndex(index: Int): Int {
+        open fun getOrderedChildIndex(index: Int): Int {
             return index
         }
 
@@ -354,7 +354,7 @@ private constructor(context: Context, private val parentView: ViewGroup, private
          * @param child Child view to check
          * @return range of horizontal motion in pixels
          */
-        fun getViewHorizontalDragRange(child: View): Int {
+        open fun getViewHorizontalDragRange(child: View): Int {
             return 0
         }
 
@@ -365,7 +365,7 @@ private constructor(context: Context, private val parentView: ViewGroup, private
          * @param child Child view to check
          * @return range of vertical motion in pixels
          */
-        fun getViewVerticalDragRange(child: View): Int {
+        open fun getViewVerticalDragRange(child: View): Int {
             return 0
         }
 
