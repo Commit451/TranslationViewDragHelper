@@ -1,12 +1,14 @@
 apply plugin: "com.android.library"
 apply plugin: "kotlin-android"
+apply plugin: "com.vanniktech.maven.publish"
+apply from: "../publish.gradle"
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 32
 
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion 29
+        targetSdkVersion 32
         versionCode 1
         versionName "1.0"
     }
@@ -22,8 +24,6 @@ android {
 }
 
 dependencies {
-    api("org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version")
-    api("androidx.core:core:1.1.0")
+    api("org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version")
+    api("androidx.core:core-ktx:1.7.0")
 }
-
-apply from: "https://raw.githubusercontent.com/Commit451/gradle-android-javadocs/1.1.0/gradle-android-javadocs.gradle"

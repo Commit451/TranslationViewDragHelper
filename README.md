@@ -40,7 +40,7 @@ The current version of this helper is derived from `ViewDragHelper` source from 
 License
 --------
 
-    Copyright 2018 Commit 451
+    Copyright 2022 Commit 451
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
