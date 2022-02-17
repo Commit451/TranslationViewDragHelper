@@ -1,5 +1,6 @@
 # TranslationViewDragHelper
-A version of [ViewDragHelper](https://developer.android.com/reference/android/support/v4/widget/ViewDragHelper.html) which accounts for X and Y translations
+A version of [ViewDragHelper](https://developer.android.com/reference/android/support/v4/widget/ViewDragHelper.html) which accounts for X and Y translations.
+
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.commit451/translationviewdraghelper/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.commit451/translationviewdraghelper)
 
 ## Gradle
