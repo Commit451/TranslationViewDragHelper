@@ -1,8 +1,13 @@
 # TranslationViewDragHelper
 A version of [ViewDragHelper](https://developer.android.com/reference/android/support/v4/widget/ViewDragHelper.html) which accounts for X and Y translations
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.commit451/translationviewdraghelper/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.commit451/translationviewdraghelper)
 
-[![Build Status](https://travis-ci.org/Commit451/TranslationViewDragHelper.svg?branch=master)](https://travis-ci.org/Commit451/TranslationViewDragHelper)
-[![](https://jitpack.io/v/Commit451/TranslationViewDragHelper.svg)](https://jitpack.io/#Commit451/TranslationViewDragHelper)
+## Gradle
+```groovy
+dependencies {
+    implementation("com.commit451:translationviewdraghelper:latest.release.here")
+}
+```
 
 # Usage
 If you have ever used a `ViewDragHelper` before, you may have noticed that if you were to translate your views using View.setX() or View.setY(), your helper would no longer correctly allow you to drag the views. This library seeks to correct this. Usage is identical to `ViewDragHelper` usage
