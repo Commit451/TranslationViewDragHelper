@@ -13,6 +13,9 @@ import com.commit451.translationviewdraghelper.TranslationViewDragHelper
 class DragFrameLayout : FrameLayout {
 
     private var viewDragHelper: TranslationViewDragHelper
+    // uncomment this and the rest to see how the real ViewDragHelper is
+//    private var viewDragHelper: ViewDragHelper
+
 
     private var callback: TranslationViewDragHelper.Callback =
         object : TranslationViewDragHelper.Callback() {
@@ -31,6 +34,24 @@ class DragFrameLayout : FrameLayout {
                 return top
             }
         }
+
+//    private var callback: ViewDragHelper.Callback =
+//        object : ViewDragHelper.Callback() {
+//            override fun tryCaptureView(child: View, pointerId: Int): Boolean {
+//                //Any children can be captured
+//                return true
+//            }
+//
+//            override fun clampViewPositionHorizontal(child: View, left: Int, dx: Int): Int {
+//                //allow full movement along horizontal axis
+//                return left
+//            }
+//
+//            override fun clampViewPositionVertical(child: View, top: Int, dy: Int): Int {
+//                //allow full movement along vertical axis
+//                return top
+//            }
+//        }
 
     constructor(context: Context) : super(context)
 
@@ -51,6 +72,7 @@ class DragFrameLayout : FrameLayout {
 
     init {
         viewDragHelper = TranslationViewDragHelper.create(this, 1.0f, callback)
+        //viewDragHelper = ViewDragHelper.create(this, 1.0f, callback)
     }
 
     override fun onInterceptTouchEvent(ev: MotionEvent): Boolean {
