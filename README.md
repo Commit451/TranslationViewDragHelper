@@ -39,7 +39,7 @@ val viewDragHelper = TranslationViewDragHelper.create(
 See the sample [custom view](https://github.com/Commit451/TranslationViewDragHelper/blob/master/app/src/main/java/com/commit451/betterviewdraghelper/sample/AllowsForDragFrameLayout.java) for a more complete example
 
 # Basis
-The current version of this helper is derived from `ViewDragHelper` source from `24.2.0` of the Support Library (pre AndroidX). Due to private constructor access on ViewDragHelper, the source has to be copied out into the `TranslationViewDragHelper`.
+The current version of this helper is derived from `ViewDragHelper` source from `1.0.0` of the `androidx.customview` library. Due to private constructor access on ViewDragHelper, the source has to be copied out into the `TranslationViewDragHelper`. You can check to see if anything has changed [here](https://android.googlesource.com/platform/frameworks/support/+log/a9ac247af2afd4115c3eb6d16c05bc92737d6305/customview/src/main/java/androidx/customview/widget/ViewDragHelper.java)
 
 License
 --------
