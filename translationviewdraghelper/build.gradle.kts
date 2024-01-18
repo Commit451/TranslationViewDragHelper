@@ -27,11 +27,8 @@ dependencies {
 mavenPublishing {
     configure(
         AndroidSingleVariantLibrary(
-            // the published variant
             variant = "release",
-            // whether to publish a sources jar
             sourcesJar = true,
-            // whether to publish a javadoc jar
             publishJavadocJar = true,
         )
     )

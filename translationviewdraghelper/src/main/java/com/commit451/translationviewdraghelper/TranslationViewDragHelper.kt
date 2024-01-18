@@ -23,10 +23,10 @@ import android.view.View
 import android.view.ViewConfiguration
 import android.view.ViewGroup
 import android.view.animation.Interpolator
+import android.widget.OverScroller
 import androidx.core.view.MotionEventCompat
 import androidx.core.view.VelocityTrackerCompat
 import androidx.core.view.ViewCompat
-import androidx.core.widget.ScrollerCompat
 import java.util.Arrays
 import kotlin.math.abs
 import kotlin.math.roundToInt
@@ -220,7 +220,7 @@ private constructor(
 
     private var trackingEdges: Int = 0
 
-    private val scroller: ScrollerCompat
+    private val scroller: OverScroller
 
     /**
      * @return The currently captured view, or null if no view has been captured.
@@ -239,7 +239,6 @@ private constructor(
      * about the state of the parent view upon request. The callback also makes decisions
      * governing the range and draggability of child views.
      */
-    @Suppress("UNUSED_PARAMETER")
     abstract class Callback {
         /**
          * Called when the drag state changes. See the `STATE_*` constants
@@ -434,7 +433,7 @@ private constructor(
         touchSlop = vc.scaledTouchSlop
         maxVelocity = vc.scaledMaximumFlingVelocity.toFloat()
         minVelocity = vc.scaledMinimumFlingVelocity.toFloat()
-        scroller = ScrollerCompat.create(context, interpolator)
+        scroller = OverScroller(context, interpolator)
     }
 
     /**
