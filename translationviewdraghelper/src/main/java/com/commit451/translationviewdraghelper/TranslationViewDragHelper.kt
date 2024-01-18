@@ -24,8 +24,6 @@ import android.view.ViewConfiguration
 import android.view.ViewGroup
 import android.view.animation.Interpolator
 import android.widget.OverScroller
-import androidx.core.view.MotionEventCompat
-import androidx.core.view.VelocityTrackerCompat
 import androidx.core.view.ViewCompat
 import java.util.Arrays
 import kotlin.math.abs
@@ -234,7 +232,7 @@ private constructor(
 
     /**
      * A Callback is used as a communication channel with the ViewDragHelper back to the
-     * parent view using it. `on*`methods are invoked on siginficant events and several
+     * parent view using it. `on*`methods are invoked on significant events and several
      * accessor methods are expected to provide the ViewDragHelper with more information
      * about the state of the parent view upon request. The callback also makes decisions
      * governing the range and draggability of child views.
@@ -551,8 +549,8 @@ private constructor(
 
         return forceSettleCapturedViewAt(
             finalLeft, finalTop,
-            VelocityTrackerCompat.getXVelocity(velocityTracker!!, activePointerId).toInt(),
-            VelocityTrackerCompat.getYVelocity(velocityTracker!!, activePointerId).toInt()
+            velocityTracker!!.getXVelocity(activePointerId).toInt(),
+            velocityTracker!!.getYVelocity(activePointerId).toInt()
         )
     }
 
@@ -591,34 +589,34 @@ private constructor(
     }
 
     private fun computeSettleDuration(child: View, dx: Int, dy: Int, xvel: Int, yvel: Int): Int {
-        var xvel = xvel
-        var yvel = yvel
-        xvel = clampMag(xvel, minVelocity.toInt(), maxVelocity.toInt())
-        yvel = clampMag(yvel, minVelocity.toInt(), maxVelocity.toInt())
+        var newXvel = xvel
+        var newYvel = yvel
+        newXvel = clampMag(newXvel, minVelocity.toInt(), maxVelocity.toInt())
+        newYvel = clampMag(newYvel, minVelocity.toInt(), maxVelocity.toInt())
         val absDx = abs(dx)
         val absDy = abs(dy)
-        val absXVel = abs(xvel)
-        val absYVel = abs(yvel)
+        val absXVel = abs(newXvel)
+        val absYVel = abs(newYvel)
         val addedVel = absXVel + absYVel
         val addedDistance = absDx + absDy
 
-        val xweight = if (xvel != 0)
+        val xweight = if (newXvel != 0)
             absXVel.toFloat() / addedVel
         else
             absDx.toFloat() / addedDistance
-        val yweight = if (yvel != 0)
+        val yweight = if (newYvel != 0)
             absYVel.toFloat() / addedVel
         else
             absDy.toFloat() / addedDistance
 
-        val xduration = computeAxisDuration(dx, xvel, callback.getViewHorizontalDragRange(child))
-        val yduration = computeAxisDuration(dy, yvel, callback.getViewVerticalDragRange(child))
+        val xduration = computeAxisDuration(dx, newXvel, callback.getViewHorizontalDragRange(child))
+        val yduration = computeAxisDuration(dy, newYvel, callback.getViewVerticalDragRange(child))
 
         return (xduration * xweight + yduration * yweight).toInt()
     }
 
     private fun computeAxisDuration(delta: Int, velocity: Int, motionRange: Int): Int {
-        var velocity = velocity
+        var newVelocity = velocity
         if (delta == 0) {
             return 0
         }
@@ -628,9 +626,8 @@ private constructor(
         val distanceRatio = 1f.coerceAtMost(abs(delta).toFloat() / width)
         val distance = halfWidth + halfWidth * distanceInfluenceForSnapDuration(distanceRatio)
 
-        val duration: Int
-        velocity = abs(velocity)
-        duration = if (velocity > 0) {
+        newVelocity = abs(newVelocity)
+        val duration = if (newVelocity > 0) {
             4 * (1000 * abs(distance / velocity)).roundToInt()
         } else {
             val range = abs(delta).toFloat() / motionRange
@@ -671,11 +668,11 @@ private constructor(
         return if (absValue > absMax) if (value > 0) absMax else -absMax else value
     }
 
-    private fun distanceInfluenceForSnapDuration(f: Float): Float {
-        var f = f
-        f -= 0.5f // center the values about 0.
-        f *= (0.3f * Math.PI / 2.0f).toFloat()
-        return sin(f.toDouble()).toFloat()
+    private fun distanceInfluenceForSnapDuration(distanceRatio: Float): Float {
+        var finalDistanceRatio = distanceRatio
+        finalDistanceRatio -= 0.5f // center the values about 0.
+        finalDistanceRatio *= (0.3f * Math.PI / 2.0f).toFloat()
+        return sin(finalDistanceRatio.toDouble()).toFloat()
     }
 
     /**
@@ -693,8 +690,8 @@ private constructor(
 
         scroller.fling(
             capturedView!!.x.toInt(), capturedView!!.y.toInt(),
-            VelocityTrackerCompat.getXVelocity(velocityTracker!!, activePointerId).toInt(),
-            VelocityTrackerCompat.getYVelocity(velocityTracker!!, activePointerId).toInt(),
+            velocityTracker!!.getXVelocity(activePointerId).toInt(),
+            velocityTracker!!.getYVelocity(activePointerId).toInt(),
             minLeft, maxLeft, minTop, maxTop
         )
 
@@ -913,6 +910,7 @@ private constructor(
      * @param y Y coordinate of the active touch point
      * @return true if child views of v can be scrolled by delta of dx.
      */
+    @Suppress("SameParameterValue")
     protected fun canScroll(v: View, checkV: Boolean, dx: Int, dy: Int, x: Int, y: Int): Boolean {
         if (v is ViewGroup) {
             val scrollX = v.getScrollX()
@@ -920,8 +918,6 @@ private constructor(
             val count = v.childCount
             // Count backwards - let topmost views consume scroll distance first.
             for (i in count - 1 downTo 0) {
-                // TODO: Add versioned support here for transformed views.
-                // This will not work for transformed views in Honeycomb+
                 val child = v.getChildAt(i)
                 if (x + scrollX >= child.x && x + scrollX < child.x + child.width &&
                     y + scrollY >= child.y && y + scrollY < child.y + child.height &&
@@ -935,10 +931,7 @@ private constructor(
             }
         }
 
-        return checkV && (ViewCompat.canScrollHorizontally(
-            v,
-            -dx
-        ) || ViewCompat.canScrollVertically(v, -dy))
+        return checkV && (v.canScrollHorizontally(-dx) || v.canScrollVertically(-dy))
     }
 
     /**
@@ -949,8 +942,8 @@ private constructor(
      * @return true if the parent view should return true from onInterceptTouchEvent
      */
     fun shouldInterceptTouchEvent(ev: MotionEvent): Boolean {
-        val action = MotionEventCompat.getActionMasked(ev)
-        val actionIndex = MotionEventCompat.getActionIndex(ev)
+        val action = ev.actionMasked
+        val actionIndex = ev.actionIndex
 
         if (action == MotionEvent.ACTION_DOWN) {
             // Reset things for a new event stream, just in case we didn't get
@@ -983,7 +976,7 @@ private constructor(
                 }
             }
 
-            MotionEventCompat.ACTION_POINTER_DOWN -> {
+            MotionEvent.ACTION_POINTER_DOWN -> {
                 val pointerId = ev.getPointerId(actionIndex)
                 val x = ev.getX(actionIndex)
                 val y = ev.getY(actionIndex)
@@ -1062,7 +1055,7 @@ private constructor(
                 saveLastMotion(ev)
             }
 
-            MotionEventCompat.ACTION_POINTER_UP -> {
+            MotionEvent.ACTION_POINTER_UP -> {
                 val pointerId = ev.getPointerId(actionIndex)
                 clearMotionHistory(pointerId)
             }
@@ -1082,8 +1075,8 @@ private constructor(
      * @param ev The touch event received by the parent view
      */
     fun processTouchEvent(ev: MotionEvent) {
-        val action = MotionEventCompat.getActionMasked(ev)
-        val actionIndex = MotionEventCompat.getActionIndex(ev)
+        val action = ev.actionMasked
+        val actionIndex = ev.actionIndex
 
         if (action == MotionEvent.ACTION_DOWN) {
             // Reset things for a new event stream, just in case we didn't get
@@ -1116,7 +1109,7 @@ private constructor(
                 }
             }
 
-            MotionEventCompat.ACTION_POINTER_DOWN -> {
+            MotionEvent.ACTION_POINTER_DOWN -> {
                 val pointerId = ev.getPointerId(actionIndex)
                 val x = ev.getX(actionIndex)
                 val y = ev.getY(actionIndex)
@@ -1195,7 +1188,7 @@ private constructor(
                 }
             }
 
-            MotionEventCompat.ACTION_POINTER_UP -> {
+            MotionEvent.ACTION_POINTER_UP -> {
                 val pointerId = ev.getPointerId(actionIndex)
                 if (viewDragState == STATE_DRAGGING && pointerId == activePointerId) {
                     // Try to find another pointer that's still holding on to the captured view.
@@ -1408,11 +1401,11 @@ private constructor(
     private fun releaseViewForPointerUp() {
         velocityTracker!!.computeCurrentVelocity(1000, maxVelocity)
         val xvel = clampMag(
-            VelocityTrackerCompat.getXVelocity(velocityTracker!!, activePointerId),
+            velocityTracker!!.getXVelocity(activePointerId),
             minVelocity, maxVelocity
         )
         val yvel = clampMag(
-            VelocityTrackerCompat.getYVelocity(velocityTracker!!, activePointerId),
+            velocityTracker!!.getYVelocity(activePointerId),
             minVelocity, maxVelocity
         )
         dispatchViewReleased(xvel, yvel)
