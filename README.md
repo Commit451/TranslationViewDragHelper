@@ -12,31 +12,30 @@ dependencies {
 
 # Usage
 If you have ever used a `ViewDragHelper` before, you may have noticed that if you were to translate your views using View.setX() or View.setY(), your helper would no longer correctly allow you to drag the views. This library seeks to correct this. Usage is identical to `ViewDragHelper` usage
-```java
-TranslationViewDragHelper.Callback callback = new TranslationViewDragHelper.Callback() {
-        @Override
-        public boolean tryCaptureView(View child, int pointerId) {
-            //Any children can be captured
-            return true;
-        }
 
-        @Override
-        public int clampViewPositionHorizontal(View child, int left, int dx) {
-            //allow full movement along horizontal axis
-            return left;
-        }
+```kotlin
+val callback = TranslationViewDragHelper.Callback {
+    override fun tryCaptureView(child: View, pointerId: Int): Boolean {
+        // Any children can be captured
+        return true
+    }
+    
+    override fun clampViewPositionHorizontal(child: View, left: Int, dx: Int): Int {
+        // allow full movement along horizontal axis
+        return left
+    }
+    
+    override fun clampViewPositionVertical(child: View, top: Int, dy: Int): Int {
+        // allow full movement along vertical axis
+        return top
+    }
+}
 
-        @Override
-        public int clampViewPositionVertical(View child, int top, int dy) {
-            //allow full movement along vertical axis
-            return top;
-        }
-    };
-
-TranslationViewDragHelper viewDragHelper = TranslationViewDragHelper.create(
-                                            viewGroup,
-                                            1.0f,
-                                            callback);
+val viewDragHelper = TranslationViewDragHelper.create(
+    viewGroup,
+    1.0f,
+    callback
+)
 ```
 See the sample [custom view](https://github.com/Commit451/TranslationViewDragHelper/blob/master/app/src/main/java/com/commit451/betterviewdraghelper/sample/AllowsForDragFrameLayout.java) for a more complete example
 
@@ -46,7 +45,7 @@ The current version of this helper is derived from `ViewDragHelper` source from 
 License
 --------
 
-    Copyright 2022 Commit 451
+    Copyright 2024 Commit 451
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.

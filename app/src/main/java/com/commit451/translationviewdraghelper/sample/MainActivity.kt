@@ -1,4 +1,4 @@
-package com.commit451.betterviewdraghelper.sample
+package com.commit451.translationviewdraghelper.sample
 
 import android.os.Bundle
 
