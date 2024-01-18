@@ -1,6 +1,5 @@
 package com.commit451.translationviewdraghelper.sample
 
-import android.annotation.TargetApi
 import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
@@ -11,7 +10,7 @@ import com.commit451.translationviewdraghelper.TranslationViewDragHelper
 /**
  * FrameLayout that allows dragging its inner views around
  */
-class AllowsForDragFrameLayout : FrameLayout {
+class DragFrameLayout : FrameLayout {
 
     private var viewDragHelper: TranslationViewDragHelper
 
@@ -43,7 +42,6 @@ class AllowsForDragFrameLayout : FrameLayout {
         defStyleAttr
     )
 
-    @TargetApi(21)
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int, defStyleRes: Int) : super(
         context,
         attrs,

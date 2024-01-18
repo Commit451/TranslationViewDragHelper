@@ -1,7 +1,6 @@
 package com.commit451.translationviewdraghelper.sample
 
 import android.os.Bundle
-
 import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {

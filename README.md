@@ -11,8 +11,7 @@ dependencies {
 ```
 
 # Usage
-If you have ever used a `ViewDragHelper` before, you may have noticed that if you were to translate your views using View.setX() or View.setY(), your helper would no longer correctly allow you to drag the views. This library seeks to correct this. Usage is identical to `ViewDragHelper` usage
-
+If you have ever used a `ViewDragHelper` before, you may have noticed that if you were to translate your views using `View.setX()` or `View.setY()`, your helper would no longer correctly allow you to drag the views. This library seeks to correct this. Usage is identical to `ViewDragHelper` usage:
 ```kotlin
 val callback = TranslationViewDragHelper.Callback {
     override fun tryCaptureView(child: View, pointerId: Int): Boolean {

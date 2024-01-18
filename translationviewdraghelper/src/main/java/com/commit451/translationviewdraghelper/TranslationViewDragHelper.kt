@@ -23,13 +23,11 @@ import android.view.View
 import android.view.ViewConfiguration
 import android.view.ViewGroup
 import android.view.animation.Interpolator
-
-import java.util.Arrays
-
 import androidx.core.view.MotionEventCompat
 import androidx.core.view.VelocityTrackerCompat
 import androidx.core.view.ViewCompat
 import androidx.core.widget.ScrollerCompat
+import java.util.Arrays
 import kotlin.math.abs
 import kotlin.math.roundToInt
 import kotlin.math.sin
@@ -50,7 +48,11 @@ open class TranslationViewDragHelper
  * @param parentView Parent view to monitor
  * @param callback the callback
  */
-private constructor(context: Context, private val parentView: ViewGroup, private val callback: Callback) {
+private constructor(
+    context: Context,
+    private val parentView: ViewGroup,
+    private val callback: Callback
+) {
 
     companion object {
         private const val TAG = "TransViewDragHelper"
@@ -151,7 +153,11 @@ private constructor(context: Context, private val parentView: ViewGroup, private
          * @param cb Callback to provide information and receive events
          * @return a new ViewDragHelper instance
          */
-        fun create(forParent: ViewGroup, sensitivity: Float, cb: Callback): TranslationViewDragHelper {
+        fun create(
+            forParent: ViewGroup,
+            sensitivity: Float,
+            cb: Callback
+        ): TranslationViewDragHelper {
             val helper = create(forParent, cb)
             helper.touchSlop = (helper.touchSlop * (1 / sensitivity)).toInt()
             return helper
@@ -544,9 +550,11 @@ private constructor(context: Context, private val parentView: ViewGroup, private
     fun settleCapturedViewAt(finalLeft: Int, finalTop: Int): Boolean {
         check(releaseInProgress) { "Cannot settleCapturedViewAt outside of a call to " + "Callback#onViewReleased" }
 
-        return forceSettleCapturedViewAt(finalLeft, finalTop,
-                VelocityTrackerCompat.getXVelocity(velocityTracker!!, activePointerId).toInt(),
-                VelocityTrackerCompat.getYVelocity(velocityTracker!!, activePointerId).toInt())
+        return forceSettleCapturedViewAt(
+            finalLeft, finalTop,
+            VelocityTrackerCompat.getXVelocity(velocityTracker!!, activePointerId).toInt(),
+            VelocityTrackerCompat.getYVelocity(velocityTracker!!, activePointerId).toInt()
+        )
     }
 
     /**
@@ -558,7 +566,12 @@ private constructor(context: Context, private val parentView: ViewGroup, private
      * @param yvel Vertical velocity
      * @return true if animation should continue through [.continueSettling] calls
      */
-    private fun forceSettleCapturedViewAt(finalLeft: Int, finalTop: Int, xvel: Int, yvel: Int): Boolean {
+    private fun forceSettleCapturedViewAt(
+        finalLeft: Int,
+        finalTop: Int,
+        xvel: Int,
+        yvel: Int
+    ): Boolean {
         val startLeft = capturedView!!.x.toInt()
         val startTop = capturedView!!.y.toInt()
         val dx = finalLeft - startLeft
@@ -679,10 +692,12 @@ private constructor(context: Context, private val parentView: ViewGroup, private
     fun flingCapturedView(minLeft: Int, minTop: Int, maxLeft: Int, maxTop: Int) {
         check(releaseInProgress) { "Cannot flingCapturedView outside of a call to " + "Callback#onViewReleased" }
 
-        scroller.fling(capturedView!!.x.toInt(), capturedView!!.y.toInt(),
-                VelocityTrackerCompat.getXVelocity(velocityTracker!!, activePointerId).toInt(),
-                VelocityTrackerCompat.getYVelocity(velocityTracker!!, activePointerId).toInt(),
-                minLeft, maxLeft, minTop, maxTop)
+        scroller.fling(
+            capturedView!!.x.toInt(), capturedView!!.y.toInt(),
+            VelocityTrackerCompat.getXVelocity(velocityTracker!!, activePointerId).toInt(),
+            VelocityTrackerCompat.getYVelocity(velocityTracker!!, activePointerId).toInt(),
+            minLeft, maxLeft, minTop, maxTop
+        )
 
         setDragState(STATE_SETTLING)
     }
@@ -910,15 +925,21 @@ private constructor(context: Context, private val parentView: ViewGroup, private
                 // This will not work for transformed views in Honeycomb+
                 val child = v.getChildAt(i)
                 if (x + scrollX >= child.x && x + scrollX < child.x + child.width &&
-                        y + scrollY >= child.y && y + scrollY < child.y + child.height &&
-                        canScroll(child, true, dx, dy, (x + scrollX - child.x).toInt(),
-                                (y + scrollY - child.y).toInt())) {
+                    y + scrollY >= child.y && y + scrollY < child.y + child.height &&
+                    canScroll(
+                        child, true, dx, dy, (x + scrollX - child.x).toInt(),
+                        (y + scrollY - child.y).toInt()
+                    )
+                ) {
                     return true
                 }
             }
         }
 
-        return checkV && (ViewCompat.canScrollHorizontally(v, -dx) || ViewCompat.canScrollVertically(v, -dy))
+        return checkV && (ViewCompat.canScrollHorizontally(
+            v,
+            -dx
+        ) || ViewCompat.canScrollVertically(v, -dy))
     }
 
     /**
@@ -1011,14 +1032,19 @@ private constructor(context: Context, private val parentView: ViewGroup, private
                         // all in every dimension with a nonzero range, bail.
                         val oldLeft = toCapture!!.left
                         val targetLeft = oldLeft + dx.toInt()
-                        val newLeft = callback.clampViewPositionHorizontal(toCapture,
-                                targetLeft, dx.toInt())
+                        val newLeft = callback.clampViewPositionHorizontal(
+                            toCapture,
+                            targetLeft, dx.toInt()
+                        )
                         val oldTop = toCapture.top
                         val targetTop = oldTop + dy.toInt()
-                        val newTop = callback.clampViewPositionVertical(toCapture, targetTop,
-                                dy.toInt())
+                        val newTop = callback.clampViewPositionVertical(
+                            toCapture, targetTop,
+                            dy.toInt()
+                        )
                         val horizontalDragRange = callback.getViewHorizontalDragRange(
-                                toCapture)
+                            toCapture
+                        )
                         val verticalDragRange = callback.getViewVerticalDragRange(toCapture)
                         if ((horizontalDragRange == 0 || horizontalDragRange > 0 && newLeft == oldLeft) && (verticalDragRange == 0 || verticalDragRange > 0 && newTop == oldTop)) {
                             break
@@ -1129,7 +1155,12 @@ private constructor(context: Context, private val parentView: ViewGroup, private
                     val idx = (x - lastMotionX!![activePointerId]).toInt()
                     val idy = (y - lastMotionY!![activePointerId]).toInt()
 
-                    dragTo((capturedView!!.x + idx).toInt(), (capturedView!!.y + idy).toInt(), idx, idy)
+                    dragTo(
+                        (capturedView!!.x + idx).toInt(),
+                        (capturedView!!.y + idy).toInt(),
+                        idx,
+                        idy
+                    )
 
                     saveLastMotion(ev)
                 } else {
@@ -1153,7 +1184,11 @@ private constructor(context: Context, private val parentView: ViewGroup, private
                         }
 
                         val toCapture = findTopChildUnder(x.toInt(), y.toInt())
-                        if (checkTouchSlop(toCapture, dx, dy) && tryCaptureViewForDrag(toCapture, pointerId)) {
+                        if (checkTouchSlop(toCapture, dx, dy) && tryCaptureViewForDrag(
+                                toCapture,
+                                pointerId
+                            )
+                        ) {
                             break
                         }
                     }
@@ -1176,7 +1211,11 @@ private constructor(context: Context, private val parentView: ViewGroup, private
 
                         val x = ev.getX(i)
                         val y = ev.getY(i)
-                        if (findTopChildUnder(x.toInt(), y.toInt()) === capturedView && tryCaptureViewForDrag(capturedView, id)) {
+                        if (findTopChildUnder(
+                                x.toInt(),
+                                y.toInt()
+                            ) === capturedView && tryCaptureViewForDrag(capturedView, id)
+                        ) {
                             newActivePointer = activePointerId
                             break
                         }
@@ -1232,9 +1271,10 @@ private constructor(context: Context, private val parentView: ViewGroup, private
         val absODelta = abs(odelta)
 
         if (initialEdgesTouched!![pointerId] and edge != edge || trackingEdges and edge == 0 ||
-                edgeDragsLocked!![pointerId] and edge == edge ||
-                edgeDragsInProgress!![pointerId] and edge == edge ||
-                absDelta <= touchSlop && absODelta <= touchSlop) {
+            edgeDragsLocked!![pointerId] and edge == edge ||
+            edgeDragsInProgress!![pointerId] and edge == edge ||
+            absDelta <= touchSlop && absODelta <= touchSlop
+        ) {
             return false
         }
         if (absDelta < absODelta * 0.5f && callback.onEdgeLock(edge)) {
@@ -1369,11 +1409,13 @@ private constructor(context: Context, private val parentView: ViewGroup, private
     private fun releaseViewForPointerUp() {
         velocityTracker!!.computeCurrentVelocity(1000, maxVelocity)
         val xvel = clampMag(
-                VelocityTrackerCompat.getXVelocity(velocityTracker!!, activePointerId),
-                minVelocity, maxVelocity)
+            VelocityTrackerCompat.getXVelocity(velocityTracker!!, activePointerId),
+            minVelocity, maxVelocity
+        )
         val yvel = clampMag(
-                VelocityTrackerCompat.getYVelocity(velocityTracker!!, activePointerId),
-                minVelocity, maxVelocity)
+            VelocityTrackerCompat.getYVelocity(velocityTracker!!, activePointerId),
+            minVelocity, maxVelocity
+        )
         dispatchViewReleased(xvel, yvel)
     }
 
@@ -1394,8 +1436,10 @@ private constructor(context: Context, private val parentView: ViewGroup, private
         if (dx != 0 || dy != 0) {
             val clampedDx = clampedX - oldLeft
             val clampedDy = clampedY - oldTop
-            callback.onViewPositionChanged(capturedView, clampedX, clampedY,
-                    clampedDx, clampedDy)
+            callback.onViewPositionChanged(
+                capturedView, clampedX, clampedY,
+                clampedDx, clampedDy
+            )
         }
     }
 
@@ -1443,7 +1487,8 @@ private constructor(context: Context, private val parentView: ViewGroup, private
         for (i in childCount - 1 downTo 0) {
             val child = parentView.getChildAt(callback.getOrderedChildIndex(i))
             if (x >= child.x && x < child.x + child.width &&
-                    y >= child.y && y < child.y + child.height) {
+                y >= child.y && y < child.y + child.height
+            ) {
                 return child
             }
         }
@@ -1463,9 +1508,11 @@ private constructor(context: Context, private val parentView: ViewGroup, private
 
     private fun isValidPointerForActionMove(pointerId: Int): Boolean {
         if (!isPointerDown(pointerId)) {
-            Log.e(TAG, "Ignoring pointerId=" + pointerId + " because ACTION_DOWN was not received "
-                    + "for this pointer before ACTION_MOVE. It likely happened because "
-                    + " ViewDragHelper did not receive all the events in the event stream.")
+            Log.e(
+                TAG, "Ignoring pointerId=" + pointerId + " because ACTION_DOWN was not received "
+                        + "for this pointer before ACTION_MOVE. It likely happened because "
+                        + " ViewDragHelper did not receive all the events in the event stream."
+            )
             return false
         }
         return true
